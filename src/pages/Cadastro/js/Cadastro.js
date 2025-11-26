@@ -32,7 +32,12 @@ export const useCadastro = (onNavigateToLogin) => {
     e.preventDefault()
     // Dados mockados - aqui você pode adicionar a lógica de cadastro
     console.log('Dados do cadastro:', formData)
-    alert('Cadastro realizado com sucesso! (dados mockados)')
+    alert('Cadastro realizado com sucesso!')
+    
+    // Redirecionar para login após cadastro
+    if (onNavigateToLogin) {
+      onNavigateToLogin()
+    }
   }
 
   const handleCPFChange = (e) => {

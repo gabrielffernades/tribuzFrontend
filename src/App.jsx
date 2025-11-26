@@ -3,6 +3,7 @@ import { useState } from 'react'
 import Login from './pages/Login'
 import Cadastro from './pages/Cadastro'
 import EsqueceuSenha from './pages/EsqueceuSenha'
+import Dashboard from './pages/Dashboard'
 
 // ========== JS (LÓGICA) ==========
 function App() {
@@ -20,6 +21,10 @@ function App() {
     setCurrentPage('esqueceuSenha')
   }
 
+  const navigateToDashboard = () => {
+    setCurrentPage('dashboard')
+  }
+
   // ========== HTML (JSX) ==========
   return (
     <>
@@ -27,6 +32,7 @@ function App() {
         <Login 
           onNavigateToCadastro={navigateToCadastro}
           onNavigateToEsqueceuSenha={navigateToEsqueceuSenha}
+          onNavigateToDashboard={navigateToDashboard}
         />
       )}
       {currentPage === 'cadastro' && (
@@ -34,6 +40,9 @@ function App() {
       )}
       {currentPage === 'esqueceuSenha' && (
         <EsqueceuSenha onNavigateToLogin={navigateToLogin} />
+      )}
+      {currentPage === 'dashboard' && (
+        <Dashboard onNavigateToLogin={navigateToLogin} />
       )}
     </>
   )

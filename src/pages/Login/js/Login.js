@@ -1,7 +1,7 @@
 // ========== JS (LÓGICA) ==========
 import { useState } from 'react'
 
-export const useLogin = (onNavigateToCadastro, onNavigateToEsqueceuSenha) => {
+export const useLogin = (onNavigateToCadastro, onNavigateToEsqueceuSenha, onNavigateToDashboard) => {
   const [formData, setFormData] = useState({
     nome: '',
     senha: ''
@@ -20,7 +20,11 @@ export const useLogin = (onNavigateToCadastro, onNavigateToEsqueceuSenha) => {
     e.preventDefault()
     // Dados mockados - aqui você pode adicionar a lógica de login
     console.log('Dados do login:', formData)
-    alert('Login realizado com sucesso! (dados mockados)')
+    
+    // Navegar para dashboard após login
+    if (onNavigateToDashboard) {
+      onNavigateToDashboard()
+    }
   }
 
   const togglePasswordVisibility = () => {

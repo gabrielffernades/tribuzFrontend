@@ -23,7 +23,7 @@ import {
 } from '../css/Login.styles'
 import { useLogin } from '../js/Login'
 
-function Login({ onNavigateToCadastro, onNavigateToEsqueceuSenha }) {
+function Login({ onNavigateToCadastro, onNavigateToEsqueceuSenha, onNavigateToDashboard }) {
   const {
     formData,
     showPassword,
@@ -32,7 +32,7 @@ function Login({ onNavigateToCadastro, onNavigateToEsqueceuSenha }) {
     togglePasswordVisibility,
     handleCadastroClick,
     handleForgotPasswordClick
-  } = useLogin(onNavigateToCadastro, onNavigateToEsqueceuSenha)
+  } = useLogin(onNavigateToCadastro, onNavigateToEsqueceuSenha, onNavigateToDashboard)
 
   return (
     <PageContainer>
