@@ -1,8 +1,9 @@
 // ========== JS (LÓGICA) ==========
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { buscarTodasTribos } from '../../../services/api'
 
-// Dados mockados
-export const mockTribos = [
+// Dados mockados para comentários (até implementar endpoint)
+export const mockComments = [
   {
     id: 1,
     name: 'Design Enthusiasts',
@@ -93,6 +94,7 @@ export const mockChatMessages = [
   }
 ]
 
+// Dados mockados para usuário do chat (será substituído pelos dados reais quando clicar em um amigo)
 export const mockChatUser = {
   id: 1,
   name: 'Maria Silva',
@@ -109,6 +111,9 @@ export const useDashboard = (onLogout) => {
   const [searchQuery, setSearchQuery] = useState('')
   const [newComment, setNewComment] = useState('')
   const [newMessage, setNewMessage] = useState('')
+  const [tribos, setTribos] = useState([])
+  const [loadingTribos, setLoadingTribos] = useState(false)
+  const [chatUser, setChatUser] = useState(mockChatUser)
 
   const handleTabClick = (tab) => {
     setActiveTab(tab)
@@ -134,7 +139,16 @@ export const useDashboard = (onLogout) => {
     }
   }
 
-  const handleOpenChat = () => {
+  const handleOpenChat = (friend = null) => {
+    if (friend) {
+      // Usar dados reais do amigo quando disponível
+      setChatUser({
+        id: friend.id,
+        name: friend.name,
+        avatar: friend.avatar || 'https://via.placeholder.com/150',
+        status: friend.status || 'online'
+      })
+    }
     setShowChatModal(true)
     // Não muda o activeTab, mantém a Home visível
   }
@@ -202,7 +216,34 @@ export const useDashboard = (onLogout) => {
     }
   }
 
-  const filteredTribos = mockTribos.filter(tribo =>
+  // Buscar tribos do backend quando o componente montar ou quando abrir o modal
+  useEffect(() => {
+    if (showTribosModal && tribos.length === 0) {
+      loadTribos()
+    }
+  }, [showTribosModal])
+
+  const loadTribos = async () => {
+    setLoadingTribos(true)
+    try {
+      const tribosData = await buscarTodasTribos()
+      // Mapear dados do backend para o formato esperado pelo frontend
+      const tribosFormatadas = tribosData.map(tribo => ({
+        id: tribo.id,
+        name: tribo.nome,
+        members: tribo.usuarios ? tribo.usuarios.length : 0,
+        description: tribo.descricao || '',
+        image: 'https://via.placeholder.com/150' // Placeholder até ter imagem no backend
+      }))
+      setTribos(tribosFormatadas)
+    } catch (error) {
+      console.error('Erro ao carregar tribos:', error)
+    } finally {
+      setLoadingTribos(false)
+    }
+  }
+
+  const filteredTribos = tribos.filter(tribo =>
     tribo.name.toLowerCase().includes(searchQuery.toLowerCase())
   )
 
@@ -216,6 +257,8 @@ export const useDashboard = (onLogout) => {
     newComment,
     newMessage,
     filteredTribos,
+    loadingTribos,
+    chatUser,
     handleTabClick,
     handleLogout,
     handleOpenChat,

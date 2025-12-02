@@ -46,12 +46,11 @@ import {
   mockStats,
   mockActivityData,
   mockNotifications,
-  mockFriends,
   mockCalls
 } from '../js/Home'
 
 function Home({ onFriendChatClick }) {
-  const { handleFriendChat, handleCallClick } = useHome(onFriendChatClick)
+  const { friends, loadingFriends, handleFriendChat, handleCallClick } = useHome(onFriendChatClick)
 
   return (
     <HomeContainer>
@@ -139,9 +138,18 @@ function Home({ onFriendChatClick }) {
       <SideColumn>
         {/* Amigos Online */}
         <ActivityCard>
-          <CardTitle>Amigos Online ({mockFriends.length})</CardTitle>
+          <CardTitle>Amigos Online ({loadingFriends ? '...' : friends.length})</CardTitle>
           <FriendsList>
-            {mockFriends.map((friend) => (
+            {loadingFriends ? (
+              <div style={{ padding: '1rem', textAlign: 'center', color: '#9CA3AF' }}>
+                Carregando...
+              </div>
+            ) : friends.length === 0 ? (
+              <div style={{ padding: '1rem', textAlign: 'center', color: '#9CA3AF' }}>
+                Nenhum amigo online
+              </div>
+            ) : (
+              friends.map((friend) => (
               <FriendItem key={friend.id}>
                 <FriendAvatarContainer>
                   <FriendAvatar $image={friend.avatar} />

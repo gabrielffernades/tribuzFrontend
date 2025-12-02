@@ -27,6 +27,8 @@ function Login({ onNavigateToCadastro, onNavigateToEsqueceuSenha, onNavigateToDa
   const {
     formData,
     showPassword,
+    loading,
+    error,
     handleChange,
     handleSubmit,
     togglePasswordVisibility,
@@ -71,9 +73,14 @@ function Login({ onNavigateToCadastro, onNavigateToEsqueceuSenha, onNavigateToDa
               </PasswordContainer>
             </FormGroup>
 
+            {error && (
+              <div style={{ color: '#ff4444', fontSize: '14px', marginBottom: '16px', textAlign: 'center' }}>
+                {error}
+              </div>
+            )}
             <ActionsContainer>
-              <SubmitButton type="submit">
-                <span>Entrar</span>
+              <SubmitButton type="submit" disabled={loading}>
+                <span>{loading ? 'Entrando...' : 'Entrar'}</span>
               </SubmitButton>
               <ForgotPasswordLink href="#" onClick={handleForgotPasswordClick}>
                 Esqueceu a senha?

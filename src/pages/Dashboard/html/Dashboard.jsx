@@ -62,7 +62,7 @@ import {
   ChatInput,
   ChatSendButton
 } from '../css/Dashboard.styles'
-import { useDashboard, mockComments, mockChatMessages, mockChatUser } from '../js/Dashboard'
+import { useDashboard, mockComments, mockChatMessages } from '../js/Dashboard'
 import Home from '../Home'
 
 function Dashboard({ onNavigateToLogin }) {
@@ -76,6 +76,8 @@ function Dashboard({ onNavigateToLogin }) {
     newComment,
     newMessage,
     filteredTribos,
+    loadingTribos,
+    chatUser,
     handleTabClick,
     handleLogout,
     handleOpenChat,
@@ -145,9 +147,7 @@ function Dashboard({ onNavigateToLogin }) {
           <HeaderTitle>Início</HeaderTitle>
         </Header>
         {activeTab === 'home' ? (
-          <Home onFriendChatClick={(friend) => {
-            handleOpenChat()
-          }} />
+          <Home onFriendChatClick={(friend) => handleOpenChat(friend)} />
         ) : (
           <ContentArea>
             <WelcomeTitle>Bem-vindo de volta!</WelcomeTitle>
@@ -180,7 +180,16 @@ function Dashboard({ onNavigateToLogin }) {
               </CloseButton>
             </ModalHeader>
             <TribosList>
-              {filteredTribos.map((tribo) => (
+              {loadingTribos ? (
+                <div style={{ padding: '2rem', textAlign: 'center', color: '#9CA3AF' }}>
+                  Carregando tribos...
+                </div>
+              ) : filteredTribos.length === 0 ? (
+                <div style={{ padding: '2rem', textAlign: 'center', color: '#9CA3AF' }}>
+                  Nenhuma tribo encontrada
+                </div>
+              ) : (
+                filteredTribos.map((tribo) => (
                 <TriboItem key={tribo.id} onClick={() => handleTriboClick(tribo)}>
                   <TriboAvatar $image={tribo.image} />
                   <TriboInfo>
@@ -189,7 +198,8 @@ function Dashboard({ onNavigateToLogin }) {
                   </TriboInfo>
                   <ArrowIcon>arrow_forward_ios</ArrowIcon>
                 </TriboItem>
-              ))}
+                ))
+              )}
             </TribosList>
           </TribosModal>
         </ModalContainer>
@@ -245,10 +255,10 @@ function Dashboard({ onNavigateToLogin }) {
         <ModalContainer $zIndex={30} $padding="1rem">
           <ChatModal>
             <ChatHeader>
-              <ChatUserAvatar $image={mockChatUser.avatar} $status={mockChatUser.status} />
+              <ChatUserAvatar $image={chatUser.avatar} $status={chatUser.status} />
               <ChatUserInfo>
-                <ChatUserName>{mockChatUser.name}</ChatUserName>
-                <ChatUserStatus>{mockChatUser.status === 'online' ? 'Online' : 'Offline'}</ChatUserStatus>
+                <ChatUserName>{chatUser.name}</ChatUserName>
+                <ChatUserStatus>{chatUser.status === 'online' ? 'Online' : 'Offline'}</ChatUserStatus>
               </ChatUserInfo>
               <CloseButton
                 onClick={handleCloseChatModal}

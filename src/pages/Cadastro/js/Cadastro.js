@@ -1,5 +1,6 @@
 // ========== JS (LÓGICA) ==========
 import { useState } from 'react'
+import { criarUsuario } from '../../../services/api'
 
 export const formatCPF = (value) => {
   const numbers = value.replace(/\D/g, '')
@@ -16,9 +17,13 @@ export const useCadastro = (onNavigateToLogin) => {
   const [formData, setFormData] = useState({
     nome: '',
     cpf: '',
-    senha: ''
+    email: '',
+    senha: '',
+    data_nascimento: ''
   })
   const [showPassword, setShowPassword] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
 
   const handleChange = (e) => {
     const { id, value } = e.target
@@ -26,17 +31,45 @@ export const useCadastro = (onNavigateToLogin) => {
       ...prev,
       [id]: value
     }))
+    setError('')
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    // Dados mockados - aqui você pode adicionar a lógica de cadastro
-    console.log('Dados do cadastro:', formData)
-    alert('Cadastro realizado com sucesso!')
-    
-    // Redirecionar para login após cadastro
-    if (onNavigateToLogin) {
-      onNavigateToLogin()
+    setLoading(true)
+    setError('')
+
+    // Validação básica
+    if (!formData.nome || !formData.cpf || !formData.senha || !formData.data_nascimento) {
+      setError('Por favor, preencha todos os campos obrigatórios.')
+      setLoading(false)
+      return
+    }
+
+    try {
+      // Converter data de nascimento para o formato esperado pelo backend (YYYY-MM-DD)
+      const dataNascimento = formData.data_nascimento.split('/').reverse().join('-')
+      
+      const usuarioData = {
+        nome: formData.nome,
+        cpf: formData.cpf.replace(/\D/g, ''),
+        email: formData.email || '',
+        senha: formData.senha,
+        data_nascimento: dataNascimento
+      }
+
+      await criarUsuario(usuarioData)
+      alert('Cadastro realizado com sucesso!')
+      
+      // Redirecionar para login após cadastro
+      if (onNavigateToLogin) {
+        onNavigateToLogin()
+      }
+    } catch (err) {
+      setError(err.message || 'Erro ao criar conta. Tente novamente.')
+      console.error('Erro no cadastro:', err)
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -62,6 +95,8 @@ export const useCadastro = (onNavigateToLogin) => {
   return {
     formData,
     showPassword,
+    loading,
+    error,
     handleChange,
     handleSubmit,
     handleCPFChange,

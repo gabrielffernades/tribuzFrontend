@@ -24,6 +24,8 @@ function Cadastro({ onNavigateToLogin }) {
   const {
     formData,
     showPassword,
+    loading,
+    error,
     handleChange,
     handleSubmit,
     handleCPFChange,
@@ -64,6 +66,27 @@ function Cadastro({ onNavigateToLogin }) {
           </FormGroup>
 
           <FormGroup>
+            <Label htmlFor="email">Email</Label>
+            <Input
+              id="email"
+              type="email"
+              placeholder="Digite seu email"
+              value={formData.email}
+              onChange={handleChange}
+            />
+          </FormGroup>
+
+          <FormGroup>
+            <Label htmlFor="data_nascimento">Data de Nascimento</Label>
+            <Input
+              id="data_nascimento"
+              type="date"
+              value={formData.data_nascimento}
+              onChange={handleChange}
+            />
+          </FormGroup>
+
+          <FormGroup>
             <Label htmlFor="senha">Senha</Label>
             <PasswordContainer>
               <PasswordInput
@@ -83,8 +106,14 @@ function Cadastro({ onNavigateToLogin }) {
             </PasswordContainer>
           </FormGroup>
 
-          <SubmitButton type="submit">
-            <span>Criar Conta</span>
+          {error && (
+            <div style={{ color: '#ff4444', fontSize: '14px', marginBottom: '16px', textAlign: 'center' }}>
+              {error}
+            </div>
+          )}
+
+          <SubmitButton type="submit" disabled={loading}>
+            <span>{loading ? 'Criando conta...' : 'Criar Conta'}</span>
           </SubmitButton>
         </Form>
 

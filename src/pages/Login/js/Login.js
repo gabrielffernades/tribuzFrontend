@@ -1,5 +1,6 @@
 // ========== JS (LÓGICA) ==========
 import { useState } from 'react'
+import { login } from '../../../services/api'
 
 export const useLogin = (onNavigateToCadastro, onNavigateToEsqueceuSenha, onNavigateToDashboard) => {
   const [formData, setFormData] = useState({
@@ -7,6 +8,8 @@ export const useLogin = (onNavigateToCadastro, onNavigateToEsqueceuSenha, onNavi
     senha: ''
   })
   const [showPassword, setShowPassword] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
 
   const handleChange = (e) => {
     const { id, value } = e.target
@@ -14,16 +17,30 @@ export const useLogin = (onNavigateToCadastro, onNavigateToEsqueceuSenha, onNavi
       ...prev,
       [id]: value
     }))
+    setError('')
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    // Dados mockados - aqui você pode adicionar a lógica de login
-    console.log('Dados do login:', formData)
-    
-    // Navegar para dashboard após login
-    if (onNavigateToDashboard) {
-      onNavigateToDashboard()
+    setLoading(true)
+    setError('')
+
+    try {
+      const usuario = await login(formData.nome, formData.senha)
+      console.log('Login realizado com sucesso:', usuario)
+      
+      // Salvar usuário logado no localStorage
+      localStorage.setItem('usuarioLogado', JSON.stringify(usuario))
+      
+      // Navegar para dashboard após login
+      if (onNavigateToDashboard) {
+        onNavigateToDashboard()
+      }
+    } catch (err) {
+      setError(err.message || 'Erro ao fazer login. Verifique suas credenciais.')
+      console.error('Erro no login:', err)
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -48,6 +65,8 @@ export const useLogin = (onNavigateToCadastro, onNavigateToEsqueceuSenha, onNavi
   return {
     formData,
     showPassword,
+    loading,
+    error,
     handleChange,
     handleSubmit,
     togglePasswordVisibility,

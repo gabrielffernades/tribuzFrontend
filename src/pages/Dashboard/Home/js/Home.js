@@ -1,7 +1,8 @@
 // ========== JS (LÓGICA) ==========
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { buscarTodosUsuarios } from '../../../../services/api'
 
-// Dados mockados para estatísticas
+// Dados mockados para estatísticas (até implementar endpoint)
 export const mockStats = {
   activeMembers: 1402,
   engagement: '+12%',
@@ -44,27 +45,7 @@ export const mockNotifications = [
   }
 ]
 
-// Dados mockados para amigos online
-export const mockFriends = [
-  {
-    id: 1,
-    name: 'Jane Doe',
-    avatar: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAyWvewK-aPim7G7WcRXYBNEcC5wwteyE-dNFbuU_oxUUPpZ-bIIVRd4lP7Tj1DqmFH-Gxh_3HL6gj3tlahv99ZMwR2F32P0x-OKmKZdB7AJjkZmNDtxrUKuz7jMlKVYNdXHQkvLRC09xlpnBBjCq-SZXbgEp7s6v7HxVp1y-zcg54WC_vJeM0IjfF4QyN3_mzPrpR1rgW5axEOhz1LWAfThviiDM9JYdWlVT62H3rMrFAvOSkTpKN4lYb5_PCsJKUEk4V9eHLddGg',
-    status: 'online'
-  },
-  {
-    id: 2,
-    name: 'David Kim',
-    avatar: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDeqI_btI3ghQq1CFehcxJyBU3m8OvzjUQwQfeiPKmlOoFfvfGdmlbH1gev80rs0WJb9hc4BNHKr9P7xZakj-dCklq6My3f7sU0BVrJ5LwLGajNtcUueQbHaYYLcsLjNgXVahAp4wxQl3fvppuK5qogMFb5dNCTXdHrESqrgcdh28o_vPi1MiVG7o4NdpOtAhOJTmoR4onMQePdxbxvL4QcVlaP5rH6-W0ZUxndjsMM_TSP0dNlPvRHrOmueEX1YawhV_Ye5jPiLPA',
-    status: 'online'
-  },
-  {
-    id: 3,
-    name: 'Emily Carter',
-    avatar: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAp_OpYrm2gMlYDIOPR6_CJg99erEC5a1vysCIPXwjaV32I_0b6bcfUJyTWsqwy0OjJODWR9taFN_wQL51AK5SGIPPrIc9XUgjqPZqspORobhTfvspCTuCaXGKL79LC2To7hau4DyuUNkFt2Yzmyopc8Yw4PQ9TW7OWbIJudVmmtqhoTGln3L7isv7oHVD6dusCVoyayr8z9L86mmd_VgDVlMpMN3zXZRXHyfUeDRvm6fqkNlFTZYACfN24yv5xEzk5CSnNs-sdyio',
-    status: 'online'
-  }
-]
+// Dados mockados para amigos online (será substituído pelos dados do backend)
 
 // Dados mockados para ligações
 export const mockCalls = [
@@ -83,6 +64,39 @@ export const mockCalls = [
 ]
 
 export const useHome = (onFriendChatClick) => {
+  const [friends, setFriends] = useState([])
+  const [loadingFriends, setLoadingFriends] = useState(false)
+
+  useEffect(() => {
+    loadFriends()
+  }, [])
+
+  const loadFriends = async () => {
+    setLoadingFriends(true)
+    try {
+      const usuarios = await buscarTodosUsuarios()
+      // Pegar usuário logado do localStorage
+      const usuarioLogadoStr = localStorage.getItem('usuarioLogado')
+      const usuarioLogado = usuarioLogadoStr ? JSON.parse(usuarioLogadoStr) : null
+      
+      // Filtrar o usuário logado e formatar os dados
+      const amigosFormatados = usuarios
+        .filter(usuario => usuarioLogado && usuario.id !== usuarioLogado.id)
+        .map(usuario => ({
+          id: usuario.id,
+          name: usuario.nome,
+          avatar: 'https://via.placeholder.com/150', // Placeholder até ter avatar no backend
+          status: 'online' // Mockado até implementar status no backend
+        }))
+      
+      setFriends(amigosFormatados)
+    } catch (error) {
+      console.error('Erro ao carregar amigos:', error)
+    } finally {
+      setLoadingFriends(false)
+    }
+  }
+
   const handleFriendChat = (friend) => {
     if (onFriendChatClick) {
       onFriendChatClick(friend)
@@ -95,6 +109,8 @@ export const useHome = (onFriendChatClick) => {
   }
 
   return {
+    friends,
+    loadingFriends,
     handleFriendChat,
     handleCallClick
   }
