@@ -38,6 +38,15 @@ export const login = async (nome, senha) => {
   }
 }
 
+export const redefinirSenha = async (cpf, novaSenha) => {
+  try {
+    const response = await api.post('/usuarios/redefinir-senha', { cpf, novaSenha })
+    return response.data
+  } catch (error) {
+    throw error.response?.data || error.message
+  }
+}
+
 // ========== TRIBOS ==========
 export const buscarTodasTribos = async () => {
   try {

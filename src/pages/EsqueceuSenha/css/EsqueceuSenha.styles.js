@@ -177,3 +177,14 @@ export const FooterLink = styled.a`
   }
 `
 
+export const ErrorMessage = styled.div`
+  padding: 0.75rem 1rem;
+  border-radius: 0.375rem;
+  background-color: rgba(242, 63, 66, 0.1);
+  border: 1px solid rgba(242, 63, 66, 0.3);
+  color: #F23F42;
+  font-size: 0.875rem;
+  font-family: 'Spline Sans', sans-serif;
+  text-align: center;
+`
+

@@ -8,13 +8,15 @@ import {
   Form,
   FormGroup,
   Label,
+  Input,
   PasswordContainer,
   PasswordInput,
   ToggleButton,
   Icon,
   SubmitButton,
   FooterText,
-  FooterLink
+  FooterLink,
+  ErrorMessage
 } from '../css/EsqueceuSenha.styles'
 import { useEsqueceuSenha } from '../js/EsqueceuSenha'
 
@@ -23,7 +25,10 @@ function EsqueceuSenha({ onNavigateToLogin }) {
     formData,
     showNovaSenha,
     showConfirmaSenha,
+    loading,
+    error,
     handleChange,
+    handleCPFChange,
     handleSubmit,
     toggleNovaSenhaVisibility,
     toggleConfirmaSenhaVisibility,
@@ -35,12 +40,28 @@ function EsqueceuSenha({ onNavigateToLogin }) {
       <ContentWrapper>
         <HeaderContainer>
           <Title>Esqueceu a Senha?</Title>
-          <Subtitle>Sem problemas. Insira sua nova senha abaixo.</Subtitle>
+          <Subtitle>Digite seu CPF e defina uma nova senha.</Subtitle>
         </HeaderContainer>
 
         <Form onSubmit={handleSubmit}>
+          {error && (
+            <ErrorMessage>{error}</ErrorMessage>
+          )}
+          
           <FormGroup>
-            <Label htmlFor="novaSenha">Senha Nova</Label>
+            <Label htmlFor="cpf">CPF</Label>
+            <Input
+              id="cpf"
+              type="text"
+              placeholder="000.000.000-00"
+              value={formData.cpf}
+              onChange={handleCPFChange}
+              required
+            />
+          </FormGroup>
+
+          <FormGroup>
+            <Label htmlFor="novaSenha">Nova Senha</Label>
             <PasswordContainer>
               <PasswordInput
                 id="novaSenha"
@@ -61,7 +82,7 @@ function EsqueceuSenha({ onNavigateToLogin }) {
           </FormGroup>
 
           <FormGroup>
-            <Label htmlFor="confirmaSenha">Confirma Senha Nova</Label>
+            <Label htmlFor="confirmaSenha">Confirmar Nova Senha</Label>
             <PasswordContainer>
               <PasswordInput
                 id="confirmaSenha"
@@ -81,8 +102,8 @@ function EsqueceuSenha({ onNavigateToLogin }) {
             </PasswordContainer>
           </FormGroup>
 
-          <SubmitButton type="submit">
-            Redefinir Senha
+          <SubmitButton type="submit" disabled={loading}>
+            {loading ? 'Redefinindo...' : 'Redefinir Senha'}
           </SubmitButton>
         </Form>
 
