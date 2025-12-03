@@ -258,6 +258,25 @@ export const TriboAvatar = styled.div`
   background-repeat: no-repeat;
 `
 
+export const TriboIconContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 1;
+  border-radius: ${props => props.$large ? '0.75rem' : '9999px'};
+  width: ${props => props.$large ? '4rem' : '2.5rem'};
+  height: ${props => props.$large ? '4rem' : '2.5rem'};
+  background-color: #5865F2;
+  flex-shrink: 0;
+`
+
+export const TriboIcon = styled.span`
+  font-family: 'Material Symbols Outlined';
+  font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  font-size: ${props => props.$large ? '2rem' : '1.5rem'};
+  color: #ffffff;
+`
+
 export const TriboInfo = styled.div`
   display: flex;
   flex: 1;
@@ -602,6 +621,118 @@ export const ChatSendButton = styled.button`
 
   &:hover {
     background-color: rgba(88, 101, 242, 0.8);
+  }
+`
+
+// Create Tribo Modal Styles
+export const CreateTriboModal = styled.div`
+  display: flex;
+  height: auto;
+  max-height: 600px;
+  width: 100%;
+  max-width: 32rem;
+  flex-direction: column;
+  border-radius: 0.5rem;
+  background-color: #2B2D31;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+`
+
+export const CreateTriboForm = styled.form`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1.5rem;
+`
+
+export const FormInput = styled.input`
+  width: 100%;
+  border-radius: 0.375rem;
+  border: none;
+  background-color: #1E1F22;
+  padding: 0.75rem 1rem;
+  color: #F2F3F5;
+  font-family: 'Spline Sans', sans-serif;
+  transition: all 0.2s;
+
+  &::placeholder {
+    color: #949BA4;
+  }
+
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px #5865F2;
+  }
+`
+
+export const FormTextareaInput = styled.textarea`
+  width: 100%;
+  min-height: 100px;
+  resize: vertical;
+  border-radius: 0.375rem;
+  border: none;
+  background-color: #1E1F22;
+  padding: 0.75rem 1rem;
+  color: #F2F3F5;
+  font-family: 'Spline Sans', sans-serif;
+  transition: all 0.2s;
+
+  &::placeholder {
+    color: #949BA4;
+  }
+
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px #5865F2;
+  }
+`
+
+export const FormError = styled.p`
+  color: #F23F42;
+  font-size: 0.875rem;
+  font-family: 'Spline Sans', sans-serif;
+  margin: 0;
+`
+
+export const FormActions = styled.div`
+  display: flex;
+  gap: 0.75rem;
+  justify-content: flex-end;
+  margin-top: 0.5rem;
+`
+
+export const FormCancelButton = styled.button`
+  border-radius: 0.375rem;
+  background-color: #1E1F22;
+  padding: 0.625rem 1.25rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #F2F3F5;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  font-family: 'Spline Sans', sans-serif;
+
+  &:hover {
+    background-color: #2B2D31;
+  }
+`
+
+export const FormSubmitButton = styled.button`
+  border-radius: 0.375rem;
+  background-color: #5865F2;
+  padding: 0.625rem 1.25rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #ffffff;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  font-family: 'Spline Sans', sans-serif;
+  opacity: ${props => props.$disabled ? 0.5 : 1};
+  cursor: ${props => props.$disabled ? 'not-allowed' : 'pointer'};
+
+  &:hover {
+    background-color: ${props => props.$disabled ? '#5865F2' : 'rgba(88, 101, 242, 0.8)'};
   }
 `
 

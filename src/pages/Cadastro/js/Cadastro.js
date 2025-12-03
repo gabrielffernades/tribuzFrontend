@@ -48,15 +48,28 @@ export const useCadastro = (onNavigateToLogin) => {
 
     try {
       // Converter data de nascimento para o formato esperado pelo backend (YYYY-MM-DD)
-      const dataNascimento = formData.data_nascimento.split('/').reverse().join('-')
+      // Formato de entrada: DD/MM/YYYY -> Formato de saída: YYYY-MM-DD
+      let dataNascimento = formData.data_nascimento
+      if (dataNascimento.includes('/')) {
+        const partes = dataNascimento.split('/')
+        if (partes.length === 3) {
+          dataNascimento = `${partes[2]}-${partes[1]}-${partes[0]}`
+        } else {
+          setError('Formato de data inválido. Use DD/MM/YYYY')
+          setLoading(false)
+          return
+        }
+      }
       
       const usuarioData = {
-        nome: formData.nome,
+        nome: formData.nome.trim(),
         cpf: formData.cpf.replace(/\D/g, ''),
-        email: formData.email || '',
+        email: formData.email.trim() || null,
         senha: formData.senha,
         data_nascimento: dataNascimento
       }
+
+      console.log('Dados sendo enviados:', usuarioData)
 
       await criarUsuario(usuarioData)
       alert('Cadastro realizado com sucesso!')
@@ -66,8 +79,9 @@ export const useCadastro = (onNavigateToLogin) => {
         onNavigateToLogin()
       }
     } catch (err) {
-      setError(err.message || 'Erro ao criar conta. Tente novamente.')
-      console.error('Erro no cadastro:', err)
+      console.error('Erro completo no cadastro:', err)
+      const errorMessage = err.response?.data?.message || err.message || err.error || 'Erro ao criar conta. Tente novamente.'
+      setError(errorMessage)
     } finally {
       setLoading(false)
     }

@@ -1,41 +1,8 @@
 // ========== JS (LÓGICA) ==========
 import { useState, useEffect } from 'react'
-import { buscarTodasTribos } from '../../../services/api'
+import { buscarTodasTribos, criarTribo } from '../../../services/api'
 
 // Dados mockados para comentários (até implementar endpoint)
-export const mockComments = [
-  {
-    id: 1,
-    name: 'Design Enthusiasts',
-    members: 1204,
-    image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCY1_dDXMAtJZb7Zo-Y3B20AL3Jr107M6Dww9xKCABkKt_CxMm3wbCe07_-6PvTWp9D8Ts2Y-NVWpUbN-vv_iwW2FTnb4zbANJ2SYEX9ZGeOT8KWFjL3tifpgjq_a5lDNEoNBGcLOF8eIAzmx-e4zk72LxvTbYFMMOOGxieK87-Wy4VER7yAUJ8pvADjXhIVjg5zKO45Rfw0-xl_Aiy0jw6jJ05KYDvNKFh-TbqgFCvUPvjM8hd96D6XoPJ58ap-W7lMBF1ufUmAew'
-  },
-  {
-    id: 2,
-    name: 'Gaming Zone',
-    members: 5832,
-    image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuB7FCCSAqD6hTdH4RuFmWV2HaT5m2aFWFLpaNcaon8aOYzbmkjswNZNNKExJbaY7JA0E81NtjFOjmDiG7HJfIywrQzCcMTW2Kv00kP37FBQzWOi6-fqQ_IXX1qYX8Nlj9zMkMpb3KmHfh_u1rw3PNMHj2uDP9JspzrKqVLv8gUKKrmMCSFO1fgCXmnHA9OrjghszIh2gkupC1neo0oJjCPOMkjEbqN0qhXdzpdUCWe0GG1aOa-E8aIvJzke0286bbEk7dIf_3CqoFg'
-  },
-  {
-    id: 3,
-    name: 'Dev Connect',
-    members: 3410,
-    image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBXPJzRlXjKMtKkM5UCgWsbHfIPnlhPq4GdjyCPsdVNr8_JH7zfrZQ1zK9ybQ303h6HX0calWMhTotjHkPHlFKVjrAJl95CkjDxm4IlmPz9kZWcpmxSaZgXLpSQBq4Z8rjekBKra2q2JYfEVceda7INt2aLjhdVJGB-EpYGzb7A1bFOIHNUO7WW-jie02J6A3ymuU6o0jeWALeAoHHv609n_Qh39myiKdDsZ6c8s5M-HNm28G0WEpcddXdBVKwSXOWk7_qgEj-En0k'
-  },
-  {
-    id: 4,
-    name: 'Book Worms',
-    members: 876,
-    image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuALmdK9vIlYyKdOoo8OenO__NVZCpxqtLEZtGVu4LqIkevCKzDVKE5N8CtSEEBnKuhU7oCg-_yChtpK2qDyzVKuyeNlEWPXz3XJAuaG3Jio8A1SrUzOeaPESlDliHdR3y294eontfgBP3ajlswkd8eK1rKp-aO0GkQ6iYYG_QrvFPlZ-E0AcHjmnT6wNF_BRTs1yU6KNGDr9A9X6WxGu6IHqT69Om8b_BFYyu4N9lXJ6JRkEJ4ZplNcALKv3WZlmiTdCs6_FPw6DOs'
-  },
-  {
-    id: 5,
-    name: 'Outdoor Adventurers',
-    members: 2155,
-    image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBZi-InNRi81Akq8RtylwVjGwgvAQpfAYXGD5rICZovNYgVijnu0kYMHsgClae0gQKSwfmM3qRL8nSIdf4fucsGfDa671csjIBIA2ti-fKPVRJ9jwIpbQn_I3KxLmNUV71mlCchMOcWRNmpjBdlVZqD4RR1-TL4hNI8A06gd3Tc_7bi45j1newlThCFKsg3bmXSbikOdL_bamtsgSVLZX6fra50Q7hnvDFYjVGIJuP7WWYr8DvGVxWBTKsIEkS1IgxRRp86j4dujK8'
-  }
-]
-
 export const mockComments = [
   {
     id: 1,
@@ -94,6 +61,40 @@ export const mockChatMessages = [
   }
 ]
 
+// Dados mockados para chat de tribo
+export const mockTriboChatMessages = [
+  {
+    id: 1,
+    sender: 'other',
+    text: 'Bem-vindos à tribo! Fiquem à vontade para compartilhar ideias.',
+    time: '10:15'
+  },
+  {
+    id: 2,
+    sender: 'other',
+    text: 'Alguém tem alguma dúvida sobre o tema da tribo?',
+    time: '10:20'
+  },
+  {
+    id: 3,
+    sender: 'me',
+    text: 'Oi pessoal! Acabei de entrar na tribo, muito legal!',
+    time: '10:25'
+  },
+  {
+    id: 4,
+    sender: 'other',
+    text: 'Que bom ter você aqui! Esperamos suas contribuições.',
+    time: '10:26'
+  },
+  {
+    id: 5,
+    sender: 'other',
+    text: 'Vamos organizar um evento da tribo?',
+    time: '10:30'
+  }
+]
+
 // Dados mockados para usuário do chat (será substituído pelos dados reais quando clicar em um amigo)
 export const mockChatUser = {
   id: 1,
@@ -107,6 +108,7 @@ export const useDashboard = (onLogout) => {
   const [showTribosModal, setShowTribosModal] = useState(false)
   const [showFeedModal, setShowFeedModal] = useState(false)
   const [showChatModal, setShowChatModal] = useState(false)
+  const [showCreateTriboModal, setShowCreateTriboModal] = useState(false)
   const [selectedTribo, setSelectedTribo] = useState(null)
   const [searchQuery, setSearchQuery] = useState('')
   const [newComment, setNewComment] = useState('')
@@ -114,6 +116,11 @@ export const useDashboard = (onLogout) => {
   const [tribos, setTribos] = useState([])
   const [loadingTribos, setLoadingTribos] = useState(false)
   const [chatUser, setChatUser] = useState(mockChatUser)
+  const [chatMessages, setChatMessages] = useState(mockChatMessages)
+  const [newTriboNome, setNewTriboNome] = useState('')
+  const [newTriboDescricao, setNewTriboDescricao] = useState('')
+  const [creatingTribo, setCreatingTribo] = useState(false)
+  const [createTriboError, setCreateTriboError] = useState('')
 
   const handleTabClick = (tab) => {
     setActiveTab(tab)
@@ -139,6 +146,99 @@ export const useDashboard = (onLogout) => {
     }
   }
 
+
+  const handleOpenTribos = () => {
+    setShowTribosModal(true)
+    setShowFeedModal(false)
+    setShowChatModal(false)
+    setShowCreateTriboModal(false)
+    setSelectedTribo(null)
+    // Não muda o activeTab, mantém a Home visível
+  }
+
+  const handleOpenCreateTribo = () => {
+    setShowCreateTriboModal(true)
+    setShowTribosModal(false)
+    setShowFeedModal(false)
+    setShowChatModal(false)
+    setNewTriboNome('')
+    setNewTriboDescricao('')
+    setCreateTriboError('')
+  }
+
+  const handleCloseCreateTriboModal = () => {
+    setShowCreateTriboModal(false)
+    setNewTriboNome('')
+    setNewTriboDescricao('')
+    setCreateTriboError('')
+  }
+
+  const handleCreateTribo = async (e) => {
+    e.preventDefault()
+    if (!newTriboNome.trim()) {
+      setCreateTriboError('O nome da tribo é obrigatório')
+      return
+    }
+
+    setCreatingTribo(true)
+    setCreateTriboError('')
+
+    try {
+      const triboData = {
+        nome: newTriboNome.trim(),
+        descricao: newTriboDescricao.trim() || null
+      }
+
+      await criarTribo(triboData)
+      
+      // Recarregar lista de tribos
+      await loadTribos()
+      
+      // Fechar modal e abrir modal de tribos
+      handleCloseCreateTriboModal()
+      handleOpenTribos()
+    } catch (error) {
+      console.error('Erro ao criar tribo:', error)
+      setCreateTriboError(error.message || error.error || 'Erro ao criar tribo. Tente novamente.')
+    } finally {
+      setCreatingTribo(false)
+    }
+  }
+
+  const handleLogout = () => {
+    // Limpar dados do usuário do localStorage
+    localStorage.removeItem('usuarioLogado')
+    // Redirecionar para login
+    if (onLogout) {
+      onLogout()
+    }
+  }
+
+  const handleTriboClick = (tribo) => {
+    setSelectedTribo(tribo)
+    setShowTribosModal(false)
+    setShowFeedModal(true) // Abrir modal de detalhes da tribo
+    setShowChatModal(false)
+    setShowCreateTriboModal(false)
+  }
+
+  const handleOpenTriboChat = (tribo) => {
+    // Criar dados mockados para o chat da tribo
+    const triboChatUser = {
+      id: tribo.id,
+      name: tribo.name,
+      avatar: 'https://via.placeholder.com/150',
+      status: 'online',
+      isTribo: true
+    }
+    setChatUser(triboChatUser)
+    // Usar mensagens mockadas específicas para tribo
+    setChatMessages(mockTriboChatMessages)
+    setShowChatModal(true)
+    setShowFeedModal(false)
+    setShowTribosModal(false)
+  }
+
   const handleOpenChat = (friend = null) => {
     if (friend) {
       // Usar dados reais do amigo quando disponível
@@ -148,30 +248,11 @@ export const useDashboard = (onLogout) => {
         avatar: friend.avatar || 'https://via.placeholder.com/150',
         status: friend.status || 'online'
       })
+      // Usar mensagens mockadas normais para chat de amigo
+      setChatMessages(mockChatMessages)
     }
     setShowChatModal(true)
     // Não muda o activeTab, mantém a Home visível
-  }
-
-  const handleOpenTribos = () => {
-    setShowTribosModal(true)
-    setShowFeedModal(false)
-    setShowChatModal(false)
-    setSelectedTribo(null)
-    // Não muda o activeTab, mantém a Home visível
-  }
-
-  const handleLogout = () => {
-    if (onLogout) {
-      onLogout()
-    }
-  }
-
-  const handleTriboClick = (tribo) => {
-    setSelectedTribo(tribo)
-    setShowTribosModal(false)
-    setShowFeedModal(true)
-    setShowChatModal(false)
   }
 
   const handleCloseTribosModal = () => {
@@ -179,6 +260,12 @@ export const useDashboard = (onLogout) => {
   }
 
   const handleCloseFeedModal = () => {
+    setShowFeedModal(false)
+    setShowTribosModal(true)
+    setSelectedTribo(null)
+  }
+
+  const handleCloseTriboDetailsModal = () => {
     setShowFeedModal(false)
     setShowTribosModal(true)
     setSelectedTribo(null)
@@ -218,22 +305,41 @@ export const useDashboard = (onLogout) => {
 
   // Buscar tribos do backend quando o componente montar ou quando abrir o modal
   useEffect(() => {
-    if (showTribosModal && tribos.length === 0) {
+    if (showTribosModal) {
       loadTribos()
     }
   }, [showTribosModal])
+
+  // Ícones mockados para as tribos
+  const triboIcons = [
+    'groups',
+    'public',
+    'sports_esports',
+    'code',
+    'palette',
+    'music_note',
+    'fitness_center',
+    'book',
+    'camera_alt',
+    'restaurant',
+    'flight',
+    'school',
+    'business',
+    'science',
+    'psychology'
+  ]
 
   const loadTribos = async () => {
     setLoadingTribos(true)
     try {
       const tribosData = await buscarTodasTribos()
       // Mapear dados do backend para o formato esperado pelo frontend
-      const tribosFormatadas = tribosData.map(tribo => ({
+      const tribosFormatadas = tribosData.map((tribo, index) => ({
         id: tribo.id,
         name: tribo.nome,
         members: tribo.usuarios ? tribo.usuarios.length : 0,
         description: tribo.descricao || '',
-        image: 'https://via.placeholder.com/150' // Placeholder até ter imagem no backend
+        icon: triboIcons[index % triboIcons.length] // Ícone mockado baseado no índice
       }))
       setTribos(tribosFormatadas)
     } catch (error) {
@@ -252,6 +358,7 @@ export const useDashboard = (onLogout) => {
     showTribosModal,
     showFeedModal,
     showChatModal,
+    showCreateTriboModal,
     selectedTribo,
     searchQuery,
     newComment,
@@ -259,19 +366,31 @@ export const useDashboard = (onLogout) => {
     filteredTribos,
     loadingTribos,
     chatUser,
+    chatMessages,
+    newTriboNome,
+    newTriboDescricao,
+    creatingTribo,
+    createTriboError,
     handleTabClick,
     handleLogout,
     handleOpenChat,
     handleOpenTribos,
+    handleOpenCreateTribo,
     handleTriboClick,
     handleCloseTribosModal,
     handleCloseFeedModal,
     handleCloseChatModal,
+    handleCloseTriboDetailsModal,
+    handleOpenTriboChat,
+    handleCloseCreateTriboModal,
     handleSearchChange,
     handleCommentChange,
     handleCommentSubmit,
     handleMessageChange,
-    handleMessageSubmit
+    handleMessageSubmit,
+    handleCreateTribo,
+    setNewTriboNome,
+    setNewTriboDescricao
   }
 }
 

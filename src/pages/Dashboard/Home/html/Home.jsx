@@ -150,17 +150,18 @@ function Home({ onFriendChatClick }) {
               </div>
             ) : (
               friends.map((friend) => (
-              <FriendItem key={friend.id}>
-                <FriendAvatarContainer>
-                  <FriendAvatar $image={friend.avatar} />
-                  <FriendStatus />
-                </FriendAvatarContainer>
-                <FriendName>{friend.name}</FriendName>
-                <FriendChatButton onClick={() => handleFriendChat(friend)}>
-                  <FriendChatIcon>chat_bubble</FriendChatIcon>
-                </FriendChatButton>
-              </FriendItem>
-            ))}
+                <FriendItem key={friend.id}>
+                  <FriendAvatarContainer>
+                    <FriendAvatar $image={friend.avatar} />
+                    <FriendStatus />
+                  </FriendAvatarContainer>
+                  <FriendName>{friend.name}</FriendName>
+                  <FriendChatButton onClick={() => handleFriendChat(friend)}>
+                    <FriendChatIcon>chat_bubble</FriendChatIcon>
+                  </FriendChatButton>
+                </FriendItem>
+              ))
+            )}
           </FriendsList>
         </ActivityCard>
 
