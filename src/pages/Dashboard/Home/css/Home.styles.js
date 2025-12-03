@@ -160,6 +160,25 @@ export const NotificationAvatar = styled.div`
   background-repeat: no-repeat;
 `
 
+export const NotificationIconContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 1;
+  border-radius: 9999px;
+  width: 2rem;
+  height: 2rem;
+  background-color: #5865F2;
+  flex-shrink: 0;
+`
+
+export const NotificationIcon = styled.span`
+  font-family: 'Material Symbols Outlined';
+  font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  font-size: 1.25rem;
+  color: #ffffff;
+`
+
 export const NotificationText = styled.p`
   flex: 1;
   font-size: 0.875rem;
@@ -207,6 +226,25 @@ export const FriendAvatar = styled.div`
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+`
+
+export const FriendIconContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 1;
+  border-radius: 9999px;
+  width: 2.5rem;
+  height: 2.5rem;
+  background-color: #5865F2;
+  flex-shrink: 0;
+`
+
+export const FriendIcon = styled.span`
+  font-family: 'Material Symbols Outlined';
+  font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  font-size: 1.5rem;
+  color: #ffffff;
 `
 
 export const FriendStatus = styled.div`
@@ -275,6 +313,25 @@ export const CallAvatar = styled.div`
   background-repeat: no-repeat;
 `
 
+export const CallIconContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 1;
+  border-radius: 9999px;
+  width: 2.5rem;
+  height: 2.5rem;
+  background-color: #5865F2;
+  flex-shrink: 0;
+`
+
+export const CallUserIcon = styled.span`
+  font-family: 'Material Symbols Outlined';
+  font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  font-size: 1.5rem;
+  color: #ffffff;
+`
+
 export const CallInfo = styled.div`
   display: flex;
   flex: 1;
@@ -312,7 +369,7 @@ export const CallButton = styled.button`
   }
 `
 
-export const CallIcon = styled.span`
+export const CallButtonIcon = styled.span`
   font-family: 'Material Symbols Outlined';
   font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
   font-size: 1.125rem;

@@ -20,6 +20,8 @@ import {
   NotificationsList,
   NotificationItem,
   NotificationAvatar,
+  NotificationIconContainer,
+  NotificationIcon,
   NotificationText,
   NotificationBold,
   NotificationPrimary,
@@ -28,6 +30,8 @@ import {
   FriendItem,
   FriendAvatarContainer,
   FriendAvatar,
+  FriendIconContainer,
+  FriendIcon,
   FriendStatus,
   FriendName,
   FriendChatButton,
@@ -35,22 +39,21 @@ import {
   CallsList,
   CallItem,
   CallAvatar,
+  CallIconContainer,
+  CallUserIcon,
   CallInfo,
   CallName,
   CallStatus,
   CallButton,
-  CallIcon
+  CallButtonIcon
 } from '../css/Home.styles'
 import {
   useHome,
-  mockStats,
-  mockActivityData,
-  mockNotifications,
-  mockCalls
+  mockActivityData
 } from '../js/Home'
 
 function Home({ onFriendChatClick }) {
-  const { friends, loadingFriends, handleFriendChat, handleCallClick } = useHome(onFriendChatClick)
+  const { friends, calls, notifications, activeMembers, loadingFriends, handleFriendChat, handleCallClick } = useHome(onFriendChatClick)
 
   return (
     <HomeContainer>
@@ -64,7 +67,7 @@ function Home({ onFriendChatClick }) {
               </StatIcon>
               <StatInfo>
                 <StatLabel>Membros Ativos</StatLabel>
-                <StatValue>{mockStats.activeMembers.toLocaleString()}</StatValue>
+                <StatValue>{activeMembers.toLocaleString()}</StatValue>
               </StatInfo>
             </StatCardContent>
           </StatCard>
@@ -76,7 +79,7 @@ function Home({ onFriendChatClick }) {
               </StatIcon>
               <StatInfo>
                 <StatLabel>Engajamento</StatLabel>
-                <StatValue>{mockStats.engagement}</StatValue>
+                <StatValue>+12%</StatValue>
               </StatInfo>
             </StatCardContent>
           </StatCard>
@@ -88,7 +91,7 @@ function Home({ onFriendChatClick }) {
               </StatIcon>
               <StatInfo>
                 <StatLabel>Novas Menções</StatLabel>
-                <StatValue>{mockStats.newMentions}</StatValue>
+                <StatValue>{notifications.length}</StatValue>
               </StatInfo>
             </StatCardContent>
           </StatCard>
@@ -111,26 +114,34 @@ function Home({ onFriendChatClick }) {
         <ActivityCard>
           <CardTitle>Últimas Notificações da Tribo</CardTitle>
           <NotificationsList>
-            {mockNotifications.map((notification) => (
-              <NotificationItem key={notification.id}>
-                <NotificationAvatar $image={notification.avatar} />
-                <NotificationText>
-                  {notification.channel ? (
-                    <>
-                      <NotificationBold>{notification.text.split(' ')[0]} {notification.text.split(' ')[1]}</NotificationBold>{' '}
-                      {notification.text.split(' ').slice(2).join(' ')}{' '}
-                      <NotificationPrimary>{notification.channel}</NotificationPrimary>
-                    </>
-                  ) : (
-                    <>
-                      {notification.text}{' '}
-                      <NotificationBold>{notification.event}</NotificationBold>
-                    </>
-                  )}
-                </NotificationText>
-                <NotificationTime>{notification.time}</NotificationTime>
-              </NotificationItem>
-            ))}
+            {notifications.length === 0 ? (
+              <div style={{ padding: '1rem', textAlign: 'center', color: '#9CA3AF' }}>
+                Nenhuma notificação
+              </div>
+            ) : (
+              notifications.map((notification) => (
+                <NotificationItem key={notification.id}>
+                  <NotificationIconContainer>
+                    <NotificationIcon>{notification.icone}</NotificationIcon>
+                  </NotificationIconContainer>
+                  <NotificationText>
+                    {notification.channel ? (
+                      <>
+                        <NotificationBold>{notification.text.split(' ')[0]} {notification.text.split(' ')[1]}</NotificationBold>{' '}
+                        {notification.text.split(' ').slice(2).join(' ')}{' '}
+                        <NotificationPrimary>{notification.channel}</NotificationPrimary>
+                      </>
+                    ) : (
+                      <>
+                        {notification.text}{' '}
+                        <NotificationBold>{notification.event}</NotificationBold>
+                      </>
+                    )}
+                  </NotificationText>
+                  <NotificationTime>{notification.time}</NotificationTime>
+                </NotificationItem>
+              ))
+            )}
           </NotificationsList>
         </ActivityCard>
       </MainColumn>
@@ -152,7 +163,9 @@ function Home({ onFriendChatClick }) {
               friends.map((friend) => (
                 <FriendItem key={friend.id}>
                   <FriendAvatarContainer>
-                    <FriendAvatar $image={friend.avatar} />
+                    <FriendIconContainer>
+                      <FriendIcon>{friend.icone}</FriendIcon>
+                    </FriendIconContainer>
                     <FriendStatus />
                   </FriendAvatarContainer>
                   <FriendName>{friend.name}</FriendName>
@@ -169,18 +182,26 @@ function Home({ onFriendChatClick }) {
         <ActivityCard>
           <CardTitle>Quem está em Ligações</CardTitle>
           <CallsList>
-            {mockCalls.map((call) => (
-              <CallItem key={call.id}>
-                <CallAvatar $image={call.avatar} />
-                <CallInfo>
-                  <CallName>{call.name}</CallName>
-                  <CallStatus>Em chamada - {call.callName}</CallStatus>
-                </CallInfo>
-                <CallButton onClick={() => handleCallClick(call)}>
-                  <CallIcon>call</CallIcon>
-                </CallButton>
-              </CallItem>
-            ))}
+            {calls.length === 0 ? (
+              <div style={{ padding: '1rem', textAlign: 'center', color: '#9CA3AF' }}>
+                Ninguém em ligação
+              </div>
+            ) : (
+              calls.map((call) => (
+                <CallItem key={call.id}>
+                  <CallIconContainer>
+                    <CallUserIcon>{call.icone}</CallUserIcon>
+                  </CallIconContainer>
+                  <CallInfo>
+                    <CallName>{call.name}</CallName>
+                    <CallStatus>Em chamada - {call.callName}</CallStatus>
+                  </CallInfo>
+                  <CallButton onClick={() => handleCallClick(call)}>
+                    <CallButtonIcon>call</CallButtonIcon>
+                  </CallButton>
+                </CallItem>
+              ))
+            )}
           </CallsList>
         </ActivityCard>
       </SideColumn>
